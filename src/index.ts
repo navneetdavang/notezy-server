@@ -6,7 +6,7 @@ const { PORT } = process.env;
 const app = express();
 
 app.get('/', (_, res) =>
-	res.status(200).send('Hello, World from notezy-server'),
+	res.status(200).send('Hello, World from notezy-server:)'),
 );
 
 app.listen(Number(PORT), () => {

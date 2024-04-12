@@ -7,8 +7,9 @@
         "prod": "node dist/",
         "dev": "nodemon src/index.ts",
         "lint": "eslint --ignore-path .eslintignore src/ --fix",
-        "format": "prettier --ignore-path .prettierignore --write \"**/*.+(js|ts|json)\"",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "format": "prettier --ignore-path .prettierignore --check \"**/*.+(js|ts|json)\"",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepare": "husky"
     },
     "keywords": [],
     "author": "",
@@ -29,10 +30,5 @@
     },
     "dependencies": {
         "express": "^4.19.2"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm run lint && npm run format" // Perform linting and prettier formatting before commit
-        }
     }
 }
