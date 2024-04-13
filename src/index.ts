@@ -1,14 +1,22 @@
-import express from 'express';
 import 'dotenv/config';
 
-const { PORT } = process.env;
+import app from './app';
+import { Database } from './core/database';
+import { Env } from './utils/validateEnv';
 
-const app = express();
+const { PORT } = Env;
 
-app.get('/', (_, res) =>
-	res.status(200).send('Hello, World from notezy-server:)'),
-);
+const bootstrap = async () => {
+	try {
+		await Database.connect();
+		app.listen(PORT, () => {
+			console.info(`notezy-server is listening on PORT:${PORT}`);
+		});
+	} catch (error) {
+		const { stack, message } = error as Error;
+		console.error(`StackTrace: ${stack}`);
+		console.debug(`Error while bootstrapping the server: ${message}`);
+	}
+};
 
-app.listen(Number(PORT), () => {
-	console.info(`notezy-server is listening on PORT:${PORT}`);
-});
+bootstrap();
