@@ -1,5 +1,6 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 
+import errorsMiddleware from './middlewares/errors.middleware';
 import morganMiddleware from './middlewares/morgan.middleware';
 import notesRouter from './routes/notes.route';
 import { Endpoints, ResponseMessage } from './utils/contants';
@@ -23,12 +24,6 @@ app.all('*', (_: Request, res: Response) => {
 });
 
 // Middlerware to handle errors
-app.use(
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	(error: unknown, _: Request, res: Response, next: NextFunction) =>
-		res.status(500).json({
-			message: ResponseMessage.INTERNAL_SERVER_ERROR,
-		}),
-);
+app.use(errorsMiddleware);
 
 export default app;
