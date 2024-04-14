@@ -1,21 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express';
 
-import NoteModel from './models/note';
-import { ResponseMessage } from './utils/contants';
+import notesRouter from './routes/notes.route';
+import { Endpoints, ResponseMessage } from './utils/contants';
+import morgan from 'morgan';
 
 const app = express();
 
-app.get('/', async (_, res, next: NextFunction) => {
-	try {
-		const notes = await NoteModel.find().exec();
-		res.status(200).json({
-			notes,
-		});
-	} catch (error) {
-		res.status(500);
-		next(error);
-	}
-});
+app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use(Endpoints.NOTES, notesRouter);
 
 app.all('*', (_: Request, res: Response) =>
 	res.status(404).json({
@@ -24,12 +19,15 @@ app.all('*', (_: Request, res: Response) =>
 );
 
 // Middlerware to handle errors
-app.use((error: unknown, _: Request, res: Response) => {
-	if (error instanceof Error) console.error(error.message);
+app.use(
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	(error: unknown, _: Request, res: Response, next: NextFunction) => {
+		if (error instanceof Error) console.error(error.message);
 
-	res.json({
-		message: ResponseMessage.INTERNAL_SERVER_ERROR,
-	});
-});
+		res.status(500).json({
+			message: ResponseMessage.INTERNAL_SERVER_ERROR,
+		});
+	},
+);
 
 export default app;
