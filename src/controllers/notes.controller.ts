@@ -36,6 +36,15 @@ export const createNote: RequestHandler<
 	try {
 		logger.debug('Executing createNote controller');
 		const note = req.body;
+
+		const { title } = note;
+
+		if (!title) {
+			return res.status(400).json({
+				message: 'Invalid Request: title does not exists',
+			});
+		}
+
 		const response = await NoteModel.create(note);
 		return res.status(201).json({
 			id: response.id,
