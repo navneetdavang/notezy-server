@@ -1,4 +1,8 @@
+# Application Configurations
 PORT=
+APP_ENV=
+
+# Database: MongoDB Configurations
 MONGO_CLIENT_USERNAME=
 MONGO_CLIENT_PASSWORD=
 MONGO_CLUSTER_NAME=
