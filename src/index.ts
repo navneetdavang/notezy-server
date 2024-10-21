@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 import app from './app';
-import { Database } from './core/database';
+import { Database } from './databases/database';
 import { Env } from './utils/validateEnv';
 
 const { PORT } = Env;
