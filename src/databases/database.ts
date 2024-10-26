@@ -2,14 +2,13 @@ import mongoose, { Mongoose } from 'mongoose';
 
 import { Env } from '../utils/validateEnv';
 
+import { MongoConfig } from '../config/mongo.config';
+
 const {
 	MONGO_CLIENT_USERNAME,
 	MONGO_CLIENT_PASSWORD,
 	MONGO_CLUSTER_NAME,
 	MONGO_DATABASE_NAME,
-	MONGO_CLIENT_CONNECTION_TIMEOUT_IN_MIN,
-	MONGO_CLIENT_SOCKET_TIMEOUT_IN_HOURS,
-	MONGO_CLIENT_POOL_SIZE,
 } = Env;
 
 export class Database {
@@ -22,11 +21,9 @@ export class Database {
 		const client = await mongoose.connect(
 			`mongodb+srv://${MONGO_CLIENT_USERNAME}:${MONGO_CLIENT_PASSWORD}@${MONGO_CLUSTER_NAME}.mongodb.net/${MONGO_DATABASE_NAME}?retryWrites=true&w=majority`,
 			{
-				maxPoolSize: MONGO_CLIENT_POOL_SIZE,
-				connectTimeoutMS:
-					MONGO_CLIENT_CONNECTION_TIMEOUT_IN_MIN * 60 * 1000,
-				socketTimeoutMS:
-					MONGO_CLIENT_SOCKET_TIMEOUT_IN_HOURS * 60 * 60 * 1000,
+				maxPoolSize: MongoConfig.POOL_SIZE,
+				connectTimeoutMS: MongoConfig.CONNECTION_TIMEOUT_MS,
+				socketTimeoutMS: MongoConfig.SOCKET_TIMEOUT_MS,
 			},
 		);
 		console.info('MongoDB: Connected');
