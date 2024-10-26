@@ -13,7 +13,7 @@ import {
 import { logger } from './utils/logger';
 import { Env } from './utils/validateEnv';
 
-const { APP_ENV, PORT } = Env;
+const { APP_ENV } = Env;
 
 const app = express();
 
@@ -27,9 +27,10 @@ app.use(
 	cors({
 		origin:
 			APP_ENV === AppEnvirnoment.DEVELOPMENT
-				? [`http:\\localhost:${PORT}`]
-				: ['*'],
+				? [/^http:\/\/localhost:\d+$/]
+				: '*',
 		credentials: true,
+		optionsSuccessStatus: 200,
 		preflightContinue: true,
 	}),
 );
