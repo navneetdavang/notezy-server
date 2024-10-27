@@ -8,7 +8,7 @@
         "prod": "yarn build && node dist/",
         "dev": "nodemon src/index.ts",
         "lint": "eslint --ignore-path .eslintignore src/ --fix",
-        "format": "prettier --ignore-path .prettierignore --check \"**/*.+(js|ts|json)\"",
+        "format": "prettier --ignore-path .prettierignore --check \"**/*.+(js|ts|json)\" --write",
         "test": "echo \"Error: no test specified\" && exit 1",
         "prepare": "husky"
     },
@@ -38,6 +38,7 @@
         "helmet": "^8.0.0",
         "mongoose": "^8.3.1",
         "morgan": "^1.10.0",
-        "winston": "^3.13.0"
+        "winston": "^3.13.0",
+        "zod": "^3.23.8"
     }
 }

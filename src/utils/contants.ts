@@ -17,6 +17,7 @@ export enum Collections {
 }
 
 export enum ResponseMessage {
+	INVALID_REQUEST_BODY = 'Invalid Request Body',
 	INTERNAL_SERVER_ERROR = 'Internal Server Error',
 	INVALID_ENDPOINT = 'Invalid Endpoint',
 }
