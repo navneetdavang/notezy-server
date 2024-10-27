@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { z, ZodError, ZodRawShape, ZodTypeAny } from 'zod';
 
 import { ResponseMessage } from '../utils/contants';
@@ -16,12 +17,12 @@ export const requestValidator = (
 					({ message }) => message,
 				);
 
-				res.status(400).json({
+				res.status(StatusCodes.BAD_REQUEST).json({
 					message: ResponseMessage.INVALID_REQUEST_BODY,
 					details: errorMessages.join(' '),
 				});
 			} else {
-				res.status(500).json({
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 					message: ResponseMessage.INTERNAL_SERVER_ERROR,
 				});
 			}

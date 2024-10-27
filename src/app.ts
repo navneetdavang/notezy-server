@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
+import { StatusCodes } from 'http-status-codes';
 
 import errorsMiddleware from './middlewares/errors.middleware';
 import morganMiddleware from './middlewares/morgan.middleware';
@@ -48,7 +49,7 @@ app.all('*', (_: Request, res: Response) => {
 	logger.debug(
 		`${ResponseMessage.INVALID_ENDPOINT} => ${_.method} ${_.url}`,
 	);
-	return res.status(404).json({
+	return res.status(StatusCodes.NOT_FOUND).json({
 		message: ResponseMessage.INVALID_ENDPOINT,
 	});
 });
