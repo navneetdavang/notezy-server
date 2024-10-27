@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { isValidObjectId } from 'mongoose';
 
 import NoteModel from '../models/note';
@@ -16,7 +17,7 @@ export const getNotes: RequestHandler = async (_, res, next) => {
 		logger.debug('Executing getNotes controller');
 
 		const notes = await NoteModel.find();
-		return res.status(200).json({
+		return res.status(StatusCodes.OK).json({
 			notes,
 		});
 	} catch (error) {
@@ -39,13 +40,13 @@ export const createNote: RequestHandler<
 		const { title } = note;
 
 		if (!title) {
-			return res.status(400).json({
+			return res.status(StatusCodes.BAD_REQUEST).json({
 				message: 'Invalid Request: title does not exists',
 			});
 		}
 
 		const response = await NoteModel.create(note);
-		return res.status(201).json({
+		return res.status(StatusCodes.CREATED).json({
 			id: response.id,
 		});
 	} catch (error) {
@@ -65,18 +66,18 @@ export const getNoteById: RequestHandler<
 		const { noteId } = req.params;
 
 		if (!isValidObjectId(noteId))
-			return res.status(400).json({
+			return res.status(StatusCodes.BAD_REQUEST).json({
 				message: `Invalid Object Id[${noteId}]`,
 			});
 
 		const response = await NoteModel.findById(noteId);
 
 		if (!response)
-			return res.status(404).json({
+			return res.status(StatusCodes.NOT_FOUND).json({
 				message: `Note does not exists for Id[${noteId}]`,
 			});
 
-		return res.status(200).json(response);
+		return res.status(StatusCodes.OK).json(response);
 	} catch (error) {
 		logger.error(
 			`getNoteById controller, Error: ${(error as Error).message}`,
@@ -94,18 +95,18 @@ export const deleteNoteById: RequestHandler<
 		const { noteId } = req.params;
 
 		if (!isValidObjectId(noteId))
-			return res
-				.status(400)
-				.json({ message: `Invalid Object Id[${noteId}]` });
+			return res.status(StatusCodes.BAD_REQUEST).json({
+				message: `Invalid Object Id[${noteId}]`,
+			});
 
 		const response = await NoteModel.findByIdAndDelete(noteId);
 
 		if (!response)
-			return res.status(404).json({
+			return res.status(StatusCodes.NOT_FOUND).json({
 				message: `Note does not exists for Id[${noteId}]`,
 			});
 
-		return res.sendStatus(204);
+		return res.sendStatus(StatusCodes.NO_CONTENT);
 	} catch (error) {
 		logger.error(
 			`deleteNoteById controller, Error: ${(error as Error).message}`,
@@ -127,9 +128,9 @@ export const updateNoteById: RequestHandler<
 		const updatedNote = req.body;
 
 		if (!isValidObjectId(noteId))
-			return res
-				.status(400)
-				.json({ message: `Invalid Object Id[${noteId}]` });
+			return res.status(StatusCodes.BAD_REQUEST).json({
+				message: `Invalid Object Id[${noteId}]`,
+			});
 
 		const response = await NoteModel.findByIdAndUpdate(
 			noteId,
@@ -137,11 +138,11 @@ export const updateNoteById: RequestHandler<
 		);
 
 		if (!response)
-			return res.status(404).json({
+			return res.status(StatusCodes.NOT_FOUND).json({
 				message: `Note does not exists for Id[${noteId}]`,
 			});
 
-		return res.sendStatus(204);
+		return res.sendStatus(StatusCodes.NO_CONTENT);
 	} catch (error) {
 		logger.error(
 			`updateNoteById controller, Error: ${(error as Error).message}`,
