@@ -4,7 +4,7 @@ import { isValidObjectId } from 'mongoose';
 import NoteModel from '../models/note';
 import {
 	CreateNoteRequestBody,
-	DeleteNoteRequestParams,
+	DeleteNoteByIdRequestParams,
 	GetNoteByIdRequestParams,
 	UpdateNoteByIdRequestBody,
 	UpdateNoteByIdRequestParams,
@@ -30,8 +30,7 @@ export const getNotes: RequestHandler = async (_, res, next) => {
 export const createNote: RequestHandler<
 	unknown,
 	unknown,
-	CreateNoteRequestBody,
-	unknown
+	CreateNoteRequestBody
 > = async (req, res, next) => {
 	try {
 		logger.debug('Executing createNote controller');
@@ -58,10 +57,7 @@ export const createNote: RequestHandler<
 };
 
 export const getNoteById: RequestHandler<
-	GetNoteByIdRequestParams,
-	unknown,
-	unknown,
-	unknown
+	GetNoteByIdRequestParams
 > = async (req, res, next) => {
 	try {
 		logger.debug('Executing getNoteById controller');
@@ -72,8 +68,6 @@ export const getNoteById: RequestHandler<
 			return res.status(400).json({
 				message: `Invalid Object Id[${noteId}]`,
 			});
-
-		console.log('Test');
 
 		const response = await NoteModel.findById(noteId);
 
@@ -92,10 +86,7 @@ export const getNoteById: RequestHandler<
 };
 
 export const deleteNoteById: RequestHandler<
-	DeleteNoteRequestParams,
-	unknown,
-	unknown,
-	unknown
+	DeleteNoteByIdRequestParams
 > = async (req, res, next) => {
 	try {
 		logger.debug('Executing deleteNoteById controller');
@@ -126,8 +117,7 @@ export const deleteNoteById: RequestHandler<
 export const updateNoteById: RequestHandler<
 	UpdateNoteByIdRequestParams,
 	unknown,
-	UpdateNoteByIdRequestBody,
-	unknown
+	UpdateNoteByIdRequestBody
 > = async (req, res, next) => {
 	try {
 		logger.debug('Executing updateNoteById controller');
