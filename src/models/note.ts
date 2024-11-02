@@ -10,6 +10,6 @@ const noteSchema = new Schema(
 	{ timestamps: true },
 );
 
-export type Note = InferSchemaType<typeof noteSchema>;
+export type Note = InferSchemaType<typeof noteSchema> & { _id: string };
 
 export default model<Note>(Collections.NOTES, noteSchema);
