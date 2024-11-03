@@ -7,19 +7,29 @@ import {
 	CreateNoteRequestBody,
 	DeleteNoteByIdRequestParams,
 	GetNoteByIdRequestParams,
+	GetNotesRequestQuery,
+	GetNotesResponse,
 	UpdateNoteByIdRequestBody,
 	UpdateNoteByIdRequestParams,
 } from '../utils/interfaces';
 import { logger } from '../utils/logger';
 
-export const getNotes: RequestHandler = async (_, res, next) => {
+export const getNotes: RequestHandler<
+	unknown,
+	GetNotesResponse,
+	unknown,
+	GetNotesRequestQuery
+> = async (req, res, next) => {
 	try {
 		logger.debug('Executing getNotes controller');
 
-		const notes = await NoteService.fetchNotes({});
-		return res.status(StatusCodes.OK).json({
-			notes,
+		const { nextPage } = req.query;
+
+		const fetchNotesResult = await NoteService.fetchNotes({
+			nextPage,
 		});
+
+		return res.status(StatusCodes.OK).json(fetchNotesResult);
 	} catch (error) {
 		logger.error(
 			`getNotes controller, Error: ${(error as Error).message}`,
