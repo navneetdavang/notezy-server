@@ -1,8 +1,14 @@
 import { ParamsDictionary } from 'express-serve-static-core';
 
-export interface NoteItem {
+export interface Note {
 	title: string;
-	content?: string;
+	content?: string | null;
+}
+
+export interface NoteItem extends Note {
+	id: string;
+	createdAt: string | NativeDate;
+	updatedAt: string | NativeDate;
 }
 
 export interface NoteRequestParams extends ParamsDictionary {
@@ -24,3 +30,12 @@ export interface CreateNoteResult {
 export interface CreateNoteResponse extends CreateNoteResult {}
 
 export interface UpdateNoteByIdRequestBody extends Partial<NoteItem> {}
+
+export interface GetNotesRequestQuery {
+	nextPage?: string;
+}
+
+export interface GetNotesResponse {
+	notes: NoteItem[];
+	nextPage?: string;
+}
